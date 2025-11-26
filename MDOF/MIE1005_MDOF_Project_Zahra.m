@@ -2,8 +2,49 @@
 
 %%  1. PEMFC INTERNAL 7×7 MODEL (UNCOUPLED)
 
-M = diag(0.001*[806.4,(22.275-0.495),(2.937+0.4185),0.165,...
-               (0.145+0.4185),(22.275-0.495),806.4]);
+% Endplates
+E_ep   = 190e9;                        % Pa
+rho_ep = 8000;                         % kg/m^3
+A_ep   = 144*144*(0.001^2);            % m^2
+L_ep   = 0.02;                         % m
+m1 = rho_ep*A_ep*L_ep;
+
+% BPP ribs / main plate
+E_rib   = 105e9;                       % Pa
+rho_rib = 18000;                       % kg/m^3
+A_rib   = (110*110)*(0.001^2);         % m^2
+L_bpp   = 0.004;                       % m
+m2=A_rib*L_bpp*rho_rib;
+
+% GDL-
+E_gdl_minus   = 117e9;                 % Pa
+rho_gdl_minus = 8900;                  % kg/m^3
+A_gdl         = 110*110*(0.001^2);     % m^2
+L_gdl         = 0.0002;                % m
+m3=L_gdl*A_gdl*rho_gdl_minus;
+
+% GDL+
+E_gdl_plus   = 10e9;                   % Pa
+rho_gdl_plus = 439.39;                 % kg/m^3
+m4=rho_gdl_plus*L_gdl*A_gdl;
+
+% Gaskets (two per side)
+E_g   = 50e6;                          % Pa
+rho_g = 1690.90;                       % kg/m^3
+A_g   = 3.36*110*(0.001^2);            % m^2
+L_g   = 0.00045;                       % m
+m5=rho_g*A_g*L_g;
+
+% PEM
+E_pem   = 241e6;                       % Pa
+rho_pem = 2000;                        % kg/m^3
+A_pem   = 110*110*(0.001^2);           % m^2
+L_pem   = 0.00005;                     % m
+m6=L_pem*A_pem*rho_pem;
+
+
+M = diag([m1,m2,(m3+(2*m5)),m6,...
+               (m4+(2*m5)),m2,m1]);
 
 % Material stiffness
 k_endplate   = 4.788e10; 
